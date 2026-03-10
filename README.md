@@ -213,24 +213,16 @@ AR needs camera access, and browsers only allow camera access on secure (HTTPS) 
 
 **On Windows**, open PowerShell (press `Win+X` then click "Windows PowerShell") and run:
 
-```powershell
-# Navigate to your project folder
-cd C:\Users\<your-username>\path\to\Aframe_8thwall_binary
-
-# Generate a self-signed certificate (valid for 365 days)
-openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/CN=localhost"
-```
-
-> **If `openssl` is not recognized:** Install Git for Windows (from step 2 above) — it includes OpenSSL. Then use the "Git Bash" terminal instead of PowerShell to run the command.
-
-This creates two files in your project folder: `cert.pem` and `key.pem`.
-
-**On macOS**, open Terminal and run:
+Open **Git Bash** (installed with Git for Windows, or the default terminal on macOS/Linux), navigate to your project folder, and run:
 
 ```bash
-cd ~/path/to/Aframe_8thwall_binary
-openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/CN=localhost"
+cd /path/to/Aframe_8thwall_binary
+
+# Generate a self-signed certificate (valid for 365 days)
+MSYS_NO_PATHCONV=1 openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/CN=localhost"
 ```
+
+> **Windows note:** The `MSYS_NO_PATHCONV=1` prefix is required on Windows. Without it, Git Bash converts `/CN=localhost` into a Windows-style path (e.g., `C:/msys64/CN=localhost`) and the command silently fails. On macOS/Linux it is harmless and can be omitted.
 
 **6. Configure Live Server to use HTTPS:**
 
@@ -250,6 +242,8 @@ openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -node
 ```
 
 > `"host": "0.0.0.0"` means the server is accessible from other devices on your Wi-Fi network (your phone). `"port": 5501` is the port number you will use in the URL.
+
+> **Important:** The `./cert.pem` and `./key.pem` paths are **relative to the workspace folder you open in VS Code**. You must open the `Aframe_8thwall_binary` folder directly (File > Open Folder) — not a parent folder — so that Live Server can find the certificate files at the root. If Live Server fails to start, this is the most common cause.
 
 **7. Start Live Server:**
 
