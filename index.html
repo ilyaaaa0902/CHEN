@@ -1,186 +1,89 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A-Frame + 8th Wall Examples</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  <title>01 — 3D Primitives</title>
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0d1117;
-      color: #e6edf3;
-      min-height: 100vh;
-      padding: 2rem;
-    }
+  <!-- AR Libraries -->
+  <script src="https://cdn.8thwall.com/web/aframe/8frame-1.3.0.min.js"></script>
+  <script src="https://cdn.8thwall.com/web/xrextras/xrextras.js"></script>
 
-    h1 {
-      text-align: center;
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
+  <!-- 8th Wall Engine -->
+  <script async src="../engine/xr.js" data-preload-chunks="slam"></script>
 
-    .subtitle {
-      text-align: center;
-      color: #8b949e;
-      margin-bottom: 2.5rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .card {
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-decoration: none;
-      color: inherit;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-
-    .card:hover {
-      border-color: #58a6ff;
-      transform: translateY(-2px);
-    }
-
-    .card-number {
-      display: inline-block;
-      background: #58a6ff;
-      color: #0d1117;
-      font-weight: 700;
-      font-size: 0.85rem;
-      width: 2rem;
-      height: 2rem;
-      line-height: 2rem;
-      text-align: center;
-      border-radius: 6px;
-      margin-bottom: 0.75rem;
-    }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-    }
-
-    .card-path {
-      font-size: 0.8rem;
-      color: #8b949e;
-      font-family: monospace;
-    }
-  </style>
+  <!-- Image Target Configuration -->
+  <script>
+    const onxrloaded = () => {
+      XR8.XrController.configure({
+        imageTargetData:[{
+          "name": "my-poster",
+          "type": "PLANAR",
+          "imagePath": "../assets/Targets/cat.webp",
+          "properties": {
+            "left": 0, "top": 0,
+            "width": 830, "height": 830,
+            "originalWidth": 830, "originalHeight": 830,
+            "isRotated": false
+          }
+        }]
+      });
+    };
+    window.XR8 ? onxrloaded() : window.addEventListener('xrloaded', onxrloaded);
+  </script>
 </head>
 <body>
-  <h1>A-Frame + 8th Wall Examples</h1>
-  <p class="subtitle">Click a card to open the example</p>
+  <a-scene
+    xrextras-gesture-detector
+    xrextras-almost-there
+    xrextras-loading
+    xrextras-runtime-error
+    xrweb="disableWorldTracking: true">
 
-  <h2 style="text-align:center; margin: 0 auto 0.3rem; max-width:960px; font-size:1.2rem; color:#8b949e;">A-Frame (8frame)</h2>
-  <p style="text-align:center; color:#6e7681; font-size:0.85rem; margin-bottom:1.5rem;">Uses 8frame 1.3.0 (A-Frame fork) with Three.js r137 — declarative HTML approach</p>
+    <a-camera position="0 4 10"></a-camera>
 
-  <div class="grid">
-    <a class="card" href="examples/01_primitives.html">
-      <span class="card-number">01</span>
-      <div class="card-title">Primitives</div>
-      <div class="card-path">examples/01_primitives.html</div>
-    </a>
-    <a class="card" href="examples/02_text_msdf.html">
-      <span class="card-number">02</span>
-      <div class="card-title">Text MSDF</div>
-      <div class="card-path">examples/02_text_msdf.html</div>
-    </a>
-    <a class="card" href="examples/03_images.html">
-      <span class="card-number">03</span>
-      <div class="card-title">Images</div>
-      <div class="card-path">examples/03_images.html</div>
-    </a>
-    <a class="card" href="examples/04_3d_models.html">
-      <span class="card-number">04</span>
-      <div class="card-title">3D Models</div>
-      <div class="card-path">examples/04_3d_models.html</div>
-    </a>
-    <a class="card" href="examples/05_video_chroma.html">
-      <span class="card-number">05</span>
-      <div class="card-title">Video Chroma</div>
-      <div class="card-path">examples/05_video_chroma.html</div>
-    </a>
-    <a class="card" href="examples/06_audio.html">
-      <span class="card-number">06</span>
-      <div class="card-title">Audio</div>
-      <div class="card-path">examples/06_audio.html</div>
-    </a>
-    <a class="card" href="examples/07_p5js.html">
-      <span class="card-number">07</span>
-      <div class="card-title">p5.js</div>
-      <div class="card-path">examples/07_p5js.html</div>
-    </a>
-    <a class="card" href="examples/08_gaussian_splat.html">
-      <span class="card-number">08</span>
-      <div class="card-title">Gaussian Splat</div>
-      <div class="card-path">examples/08_gaussian_splat.html</div>
-    </a>
-    <a class="card" href="examples/09_multi_targets.html">
-      <span class="card-number">09</span>
-      <div class="card-title">Multi Targets</div>
-      <div class="card-path">examples/09_multi_targets.html</div>
-    </a>
-  </div>
+    <xrextras-named-image-target name="my-poster">
 
-  <h2 style="text-align:center; margin: 2.5rem auto 0.3rem; max-width:960px; font-size:1.2rem; color:#8b949e;">Raw Three.js r178</h2>
-  <p style="text-align:center; color:#6e7681; font-size:0.85rem; margin-bottom:1.5rem;">Same examples rewritten with raw Three.js + XR8 pipeline hooks — enables Spark.js Gaussian Splatting</p>
+      <!-- Title -->
+      <a-text value="3D Primitives" color="white" align="center"
+              position="0 2.2 0" width="4"></a-text>
 
-  <div class="grid">
-    <a class="card" href="examples_threejs/01_primitives.html" style="border-color:#30363d;">
-      <span class="card-number" style="background:#f0883e;">01</span>
-      <div class="card-title">Primitives</div>
-      <div class="card-path">examples_threejs/01_primitives.html</div>
-    </a>
-    <a class="card" href="examples_threejs/02_text_msdf.html">
-      <span class="card-number" style="background:#f0883e;">02</span>
-      <div class="card-title">Text &amp; Fonts</div>
-      <div class="card-path">examples_threejs/02_text_msdf.html</div>
-    </a>
-    <a class="card" href="examples_threejs/03_images.html">
-      <span class="card-number" style="background:#f0883e;">03</span>
-      <div class="card-title">Images</div>
-      <div class="card-path">examples_threejs/03_images.html</div>
-    </a>
-    <a class="card" href="examples_threejs/04_3d_models.html">
-      <span class="card-number" style="background:#f0883e;">04</span>
-      <div class="card-title">3D Models</div>
-      <div class="card-path">examples_threejs/04_3d_models.html</div>
-    </a>
-    <a class="card" href="examples_threejs/05_video_chroma.html">
-      <span class="card-number" style="background:#f0883e;">05</span>
-      <div class="card-title">Video Chroma</div>
-      <div class="card-path">examples_threejs/05_video_chroma.html</div>
-    </a>
-    <a class="card" href="examples_threejs/06_audio.html">
-      <span class="card-number" style="background:#f0883e;">06</span>
-      <div class="card-title">Audio</div>
-      <div class="card-path">examples_threejs/06_audio.html</div>
-    </a>
-    <a class="card" href="examples_threejs/07_p5js.html">
-      <span class="card-number" style="background:#f0883e;">07</span>
-      <div class="card-title">p5.js</div>
-      <div class="card-path">examples_threejs/07_p5js.html</div>
-    </a>
-    <a class="card" href="examples_threejs/08_gaussian_splat.html">
-      <span class="card-number" style="background:#f0883e;">08</span>
-      <div class="card-title">Gaussian Splat (Spark.js)</div>
-      <div class="card-path">examples_threejs/08_gaussian_splat.html</div>
-    </a>
-    <a class="card" href="examples_threejs/09_multi_targets.html">
-      <span class="card-number" style="background:#f0883e;">09</span>
-      <div class="card-title">Multi Targets</div>
-      <div class="card-path">examples_threejs/09_multi_targets.html</div>
-    </a>
-  </div>
+      <!-- Semi-transparent ground plane -->
+      <a-plane color="#333333" opacity="0.4" rotation="-90 0 0"
+               width="4" height="3" position="0 -0.01 0"></a-plane>
+
+      <!-- Row 1: Box, Sphere, Cylinder -->
+      <a-box color="#FF0055" position="-1.2 0.5 -0.5" scale="0.6 0.6 0.6"
+             animation="property: rotation; to: 0 360 0; loop: true; dur: 4000; easing: linear">
+      </a-box>
+
+      <a-sphere color="#00AAFF" position="0 0.5 -0.5" radius="0.35"
+                animation="property: position; from: 0 0.5 -0.5; to: 0 1.0 -0.5;
+                           loop: true; dur: 1500; dir: alternate; easing: easeInOutQuad">
+      </a-sphere>
+
+      <a-cylinder color="#33CC33" position="1.2 0.4 -0.5" radius="0.25" height="0.8"
+                  animation="property: rotation; to: 360 0 0; loop: true; dur: 3000; easing: linear">
+      </a-cylinder>
+
+      <!-- Row 2: Cone, Torus, Ring -->
+      <a-cone color="#FFAA00" position="-1.2 0.45 0.5"
+              radius-bottom="0.35" radius-top="0" height="0.8"
+              animation="property: scale; from: 1 1 1; to: 1.3 1.3 1.3;
+                         loop: true; dur: 1200; dir: alternate; easing: easeInOutSine">
+      </a-cone>
+
+      <a-torus color="#AA00FF" position="0 0.5 0.5"
+               radius="0.3" radius-tubular="0.06"
+               animation="property: rotation; to: 360 360 0; loop: true; dur: 5000; easing: linear">
+      </a-torus>
+
+      <a-ring color="#FF5599" position="1.2 0.5 0.5"
+              radius-inner="0.15" radius-outer="0.35"
+              animation="property: rotation; to: 0 0 360; loop: true; dur: 3500; easing: linear">
+      </a-ring>
+
+    </xrextras-named-image-target>
+
+  </a-scene>
 </body>
 </html>
