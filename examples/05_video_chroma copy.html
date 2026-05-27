@@ -138,14 +138,13 @@
   <script>
     AFRAME.registerComponent('video-playback-on-scan', {
       schema: {
-        src: {type: 'string'},
         video: { type: 'selector' },
       },
 
       init: function () {
 
         this.video = this.data.video;
-       
+        this.audio = document.querySelector('#aud');
 
         if (!this.video) return;
 
@@ -155,12 +154,18 @@
 
           this.video.play();
 
+          if (this.audio) {
+            this.audio.play();
+          }
         };
 
         this.onLost = () => {
 
           this.video.pause();
 
+          if (this.audio) {
+            this.audio.pause();
+          }
         };
 
         this.el.sceneEl.addEventListener('xrimagefound', this.onFound);
@@ -171,7 +176,7 @@
 
         if (this.video) this.video.pause();
 
-       
+        if (this.audio) this.audio.pause();
 
         this.el.sceneEl.removeEventListener('xrimagefound', this.onFound);
         this.el.sceneEl.removeEventListener('xrimagelost', this.onLost);
