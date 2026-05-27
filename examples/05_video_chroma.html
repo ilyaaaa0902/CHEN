@@ -155,12 +155,13 @@
 
     <!-- Camera -->
     <a-camera position="0 4 10"></a-camera>
-    <a-entity image-target-audio="src:../assets/shengyin.mp3; target: my-poster"></a-entity>
+ 
     <!-- Image Target -->
     <xrextras-named-image-target
       name="my-poster"
       video-playback-on-scan="video: #vid">
          <!-- Audio component — replace src with your own audio file -->
+         <a-entity image-target-audio="src:../assets/shengyin.mp3; target: my-poster"></a-entity>
     
       <!-- VIDEO -->
       <a-entity
