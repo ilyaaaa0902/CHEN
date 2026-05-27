@@ -39,6 +39,40 @@
       : window.addEventListener('xrloaded', onxrloaded);
   </script>
 
+<script>
+  AFRAME.registerComponent('image-target-audio', {
+    schema: {
+      src: {type: 'string'},
+      target: {type: 'string', default: 'my-poster'}
+    },
+    init: function () {
+      this.audio = new Audio(this.data.src);
+      this.audio.loop = true;
+
+      this.onImageFound = (e) => {
+        if (e.detail.name === this.data.target) {
+          this.audio.play().catch(function (err) {
+            console.warn('Audio play blocked:', err);
+          });
+        }
+      };
+      this.onImageLost = (e) => {
+        if (e.detail.name === this.data.target) {
+          this.audio.pause();
+        }
+      };
+
+      this.el.sceneEl.addEventListener('xrimagefound', this.onImageFound);
+      this.el.sceneEl.addEventListener('xrimagelost', this.onImageLost);
+    },
+    remove: function () {
+      this.audio.pause();
+      this.el.sceneEl.removeEventListener('xrimagefound', this.onImageFound);
+      this.el.sceneEl.removeEventListener('xrimagelost', this.onImageLost);
+    }
+  });
+</script>
+
   <!-- Play Video + Audio -->
   <script>
     AFRAME.registerComponent('video-playback-on-scan', {
@@ -131,7 +165,8 @@
     <xrextras-named-image-target
       name="my-poster"
       video-playback-on-scan="video: #vid">
-
+         <!-- Audio component — replace src with your own audio file -->
+         <a-entity image-target-audio="src: ../assets/634332__josefpres__bass-loops-077-with-drums-long-loop-120-bpm.mp3; target: my-poster"></a-entity>
       <!-- VIDEO -->
       <a-video
         src="#vid"
